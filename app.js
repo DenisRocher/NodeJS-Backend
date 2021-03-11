@@ -1,19 +1,22 @@
 'use strict';
 
 var express = require('express');
-var bodyParser = require('body-parser');
 
 var app = express();
 
 // Cargar archivos de Rutas
+var project_routes = require('./routes/project')
 
 // Middlewares
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(bodyParser.json());
+app.use(express.urlencoded({extended:false}));
+app.use(express.json());
 
 // CORS
+app.use('/api', project_routes);
 
 // Rutas
+
+/*
 app.get('/', (req, res) => {
   res.status(200).send(
     '<h1>Página de inicio</h1>'
@@ -34,6 +37,9 @@ app.post('/test/:id', (req, res) => {
     message: 'Hola Mundo desde mi API de nodeJS // POST'
   })
 });
+*/
+
+
 
 // Export
 module.exports = app;
