@@ -3,6 +3,9 @@
 const { restart } = require( 'nodemon' );
 var Project = require('../models/project');
 
+//FileSystema para poder acceder a los directorios y eliminar archivos
+var fs = require('fs');   
+
 /** METODO 1 QUE DEVUELVE UN OBJETO JSON CON VARIOS METODOS */
 var controller = {
   home: function(req, res){
@@ -111,6 +114,42 @@ var controller = {
       });
       return res.status(200).send({project: projectDelete});      
     });
+  },
+  uploadImage: function(req, res){
+    var projectId = req.params.id;
+    var fileName = 'Sin imagen';
+
+    if(req.files){
+      var filePath = req.files.image.path;
+      var fileSplit = filePath.split('/');
+      var fileName = fileSplit[1];
+      var extSplit = fileName.split('.');
+      var extFile = extSplit[1];
+
+      if(extFile == 'png' || extFile == 'jpg' || extFile == 'jpeg' || extFile == 'gif'){
+        Project.findByIdAndUpdate(projectId, {image: fileName},{new: true},(err, projectUpdate) =>{
+          if(err) return res.status(500).send({
+            message: 'Error al invocar el servicio de upload-image'
+          });
+          if(!projectUpdate) return res.status(404).send({
+            message: 'No se ha podido subir la imagen del project: '+projectId
+          });
+          return res.status(200).send({project: projectUpdate, files: fileName});
+        });
+      }
+      else {
+        fs.unlink(filePath, (err) =>{
+        return res.status(404).send({
+          message: 'Error de extension del archivo de image upload-image'
+          });        
+        });
+      }
+    }
+    else{
+      return res.status(404).send({
+        message: fileName
+      })
+    }
   }
 };
 
