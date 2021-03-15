@@ -6,11 +6,17 @@ mongoose.Promise = global.Promise;
 
 var Admin = mongoose.mongo.Admin;
 var app = require('./app');
-var port = 3700;
+var config = require('./models/configuracion');
 
-var dbName = 'portafolio';
+var dbName = config.Configuracion.dbName;
+var password = config.Configuracion.password;
+var userAdmin = config.Configuracion.userAdmin;
+var port = config.Configuracion.port;
 
-var uri = "mongodb+srv://AdminMongodBCloud:AvdRO7hnBJBRbWx6@clustergooglecloud.toqnt.mongodb.net/"+dbName+"?retryWrites=true&w=majority";
+console.log(config);
+console.log(userAdmin);
+
+var uri = "mongodb+srv://"+userAdmin+":"+password+"@clustergooglecloud.toqnt.mongodb.net/"+dbName+"?retryWrites=true&w=majority";
 
 mongoose.connect(uri,{useNewUrlParser: true, useUnifiedTopology: true })
     .then((MongooseNode) => {
