@@ -13,9 +13,6 @@ var password = config.Configuracion.password;
 var userAdmin = config.Configuracion.userAdmin;
 var port = config.Configuracion.port;
 
-console.log(config);
-console.log(userAdmin);
-
 var uri = "mongodb+srv://"+userAdmin+":"+password+"@clustergooglecloud.toqnt.mongodb.net/"+dbName+"?retryWrites=true&w=majority";
 
 mongoose.connect(uri,{useNewUrlParser: true, useUnifiedTopology: true })
