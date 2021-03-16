@@ -3,16 +3,16 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var TestSchema = Schema({
+var StorySchema = Schema({
   name: String,
   description: String,
   category: String,
   year: Number,
-  languages: String,
+  country: String,
   image: String
 });
 
-module.exports = mongoose.model('Test', TestSchema);
+module.exports = mongoose.model('Story', StorySchema);
 /** 
  * Automaticamente, mongodb Va a crear una coleccion en BBDD projects (si no 
  * existe: Minuscula + plural)

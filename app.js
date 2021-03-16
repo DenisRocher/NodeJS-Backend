@@ -7,6 +7,7 @@ var app = express();
 // Cargar archivos de Rutas
 var project_routes = require('./routes/project')
 var test_routes = require('./routes/test')
+var story_routes = require('./routes/story')
 
 // Middlewares
 app.use(express.urlencoded({extended:false}));
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 // Rutas
 app.use('/api', project_routes);
 app.use('/api', test_routes);
+app.use('/api', story_routes);
 
 /*
 app.get('/', (req, res) => {
