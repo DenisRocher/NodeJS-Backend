@@ -8,6 +8,7 @@ var app = express();
 var project_routes = require('./routes/project')
 var test_routes = require('./routes/test')
 var story_routes = require('./routes/story')
+var category_routes = require('./routes/category')
 
 // Middlewares
 app.use(express.urlencoded({extended:false}));
@@ -32,10 +33,10 @@ app.use((req, res, next) => {
 });
 
 // Rutas
-app.use('/api', project_routes);
-app.use('/api', test_routes);
-app.use('/api', story_routes);
-
+app.use('/api/project', project_routes);
+app.use('/api/test', test_routes);
+app.use('/api/story', story_routes);
+app.use('/api/category', category_routes);
 /*
 app.get('/', (req, res) => {
   res.status(200).send(

@@ -58,9 +58,9 @@ var controller = {
     });
   },
   getStories: function(req, res){
-    var storyCountry = req.params.country;
+    var storyCategory = req.params.category;
 
-    if(storyCountry == null) {
+    if(storyCategory == null) {
       Story.find()
             .sort('year')
             .exec((err, stories)=> {
@@ -74,14 +74,14 @@ var controller = {
       });
     }
     else {
-        Story.find({'country': {$regex: '.*' + storyCountry +'.*'}})
+        Story.find({'category': {$regex: '.*' + storyCategory +'.*'}})
               .sort('year')
               .exec((err, stories)=> {
         if(err) return res.status(500).send({
           message: 'Error al recuperar el listado de relatos'
         });
         if(stories.length == 0) return res.status(404).send({
-          message: 'No existen relatos en este país: '+storyCountry
+          message: 'No existen relatos en esta categoria: '+storyCategory
         });
         return res.status(200).send({stories: stories});
       });
