@@ -25,8 +25,7 @@ var controller = {
     story.description = params.description;
     story.category = params.category;
     story.year = parseFloat(params.year);
-    story.country = params.languages;
-    story.image = null;
+    story.image = params.image;
 
     story.save((err, storyStored) => {
       if(err) return res.status(500).send({
