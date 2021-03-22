@@ -9,7 +9,8 @@ var StorySchema = Schema({
   category: String,
   year: Number,
   country: String,
-  image: String
+  image: String,
+  fileext: String
 });
 
 module.exports = mongoose.model('Story', StorySchema);

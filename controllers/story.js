@@ -4,7 +4,8 @@ const { restart } = require( 'nodemon' );
 var Story = require('../models/story');
 
 //FileSystema para poder acceder a los directorios y eliminar archivos
-var fs = require('fs');   
+var fs = require('fs');
+var path = require('path');
 
 /** METODO 1 QUE DEVUELVE UN OBJETO JSON CON VARIOS METODOS */
 var controller = {
@@ -59,7 +60,7 @@ var controller = {
   getStories: function(req, res){
     var storyCategory = req.params.category;
 
-    if(storyCategory == null) {
+    if(storyCategory == null || storyCategory == '' ) {
       Story.find()
             .sort('year')
             .exec((err, stories)=> {
@@ -125,13 +126,14 @@ var controller = {
       var extSplit = fileName.split('.');
       var extFile = extSplit[1];
 
-      if(extFile == 'png' || extFile == 'jpg' || extFile == 'jpeg' || extFile == 'gif'){
-        Story.findByIdAndUpdate(storyId, {image: fileName},{new: true},(err, storyUpdate) =>{
+      if(extFile == 'png' || extFile == 'jpg' || extFile == 'jpeg' || extFile == 'gif' 
+        || extFile == 'avi' || extFile == 'mp4' || extFile == 'mov' || extFile == 'mkv'  ){
+        Story.findByIdAndUpdate(storyId, {image: fileName,fileext:extFile},{new: true},(err, storyUpdate) =>{
           if(err) return res.status(500).send({
-            message: 'Error al invocar el servicio de upload-image'
+            message: 'Error al invocar el servicio de upload'
           });
           if(!storyUpdate) return res.status(404).send({
-            message: 'No se ha podido subir la imagen del relato: '+storyId
+            message: 'No se ha podido subir la ilustración del relato: '+storyId
           });
           return res.status(200).send({story: storyUpdate, files: fileName});
         });
@@ -139,7 +141,7 @@ var controller = {
       else {
         fs.unlink(filePath, (err) =>{
         return res.status(404).send({
-          message: 'Error de extension del archivo de image upload-image'
+          message: 'El formato del fichero es incorrecto.'
           });        
         });
       }
@@ -149,6 +151,22 @@ var controller = {
         message: fileName
       })
     }
+  },
+  getImageFile: function(req, res){
+      var fileName = req.params.image;
+      var pathFile = './uploads/'+fileName;
+
+      fs.exists(pathFile, (exists) => {
+          //console.log(exists);
+          if(exists){
+            return res.sendFile(path.resolve(pathFile))
+          }
+          else{
+            return res.status(200).send({
+              message: 'Relato sin ilustración'
+            });
+          }
+      });
   }
 };
 
