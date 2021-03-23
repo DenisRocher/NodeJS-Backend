@@ -13,7 +13,7 @@ router.put('/update/:id?', StoryController.updateStory);
 router.delete('/delete/:id?', StoryController.deleteStory);
 router.post('/upload-image/:id?', multipartMiddleware,StoryController.uploadImage);
 router.get('/getimage/:image?', multipartMiddleware,StoryController.getImageFile);
-
+router.delete('/delete-image/:image?', multipartMiddleware,StoryController.removeImageFile);
 
 module.exports = router;
 

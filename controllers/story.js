@@ -91,7 +91,6 @@ var controller = {
   updateStory: function(req, res){
     var storyId = req.params.id;
     var update = req.body;
-
     Story.findByIdAndUpdate(storyId, update, {new: true},(err, storyUpdate) => {
       if(err) return res.status(500).send({
         message: 'Error al invocar el servicio de actualización del relatos'
@@ -167,7 +166,32 @@ var controller = {
             });
           }
       });
+  },
+  removeImageFile: function(req, res){
+    var fileName = req.params.image;
+    var pathFile = './uploads/'+fileName;
+    console.log("delete file:..", fileName)
+    fs.exists(pathFile, (exists) => {
+      if (exists) {
+        fs.unlink(pathFile,(err)=>{
+          if(err) {
+            return res.status(500).send({
+            message: 'Error al invocar el servicio de borrado'
+            });
+          }
+          else {
+            return res.status(200).send({
+              message: 'Se ha borrado correctamente la ilustración: '+fileName
+            });
+          }
+        })
+      }
+      else {
+        res.status(404).send({
+          message: 'No existe el fichero para borrar'
+        })
+      }
+    });
   }
 };
-
 module.exports = controller;
